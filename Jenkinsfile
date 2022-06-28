@@ -1,35 +1,30 @@
 pipeline {
-    agent any 
-    environment {
-    DOCKERHUB_CREDENTIALS = credentials('mayor1docker')
-    }
-    stages { 
-        stage('SCM Checkout') {
-            steps{
-            git 'https://github.com/Mayokun-DevOps/Nodejs-Project.git'
-            }
-        }
+    agent any
 
-        stage('Build docker image') {
-            steps {  
-                sh 'docker build -t mayor1docker/git-jenkins:$BUILD_NUMBER .'
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Build Networkings-DevOps-World Application'
             }
         }
-        stage('login to dockerhub') {
-            steps{
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        stage('Test') {
+            steps {
+                echo 'Test Networkings-DevOps-World Application'
             }
         }
-        stage('push image') {
-            steps{
-                sh 'docker push mayor1docker/git-jenkins:$BUILD_NUMBER'
+        stage('Deploy') {
+            steps {
+                echo 'Deploy Networkings-DevOps-World Application'
             }
-        }
-}
-post {
-        always {
-            sh 'docker logout'
         }
     }
-}
+    post
+    {
 
+          always
+          {
+            emailext body: 'Kindly be informed the Pipeline Build is Successfully though some codes needs to be visited now.', subject: 'Pipeline Status Guys', to: 'sogsax@gmail.com'
+          }
+
+    }
+}
